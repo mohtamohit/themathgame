@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+<title>TMG-2 Player Mode</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+</head>
+<body>
+<style>
+body{
+	background: url("http://static.squarespace.com/static/51cfa39ce4b02caa003edefe/t/51d61f7de4b0108eefdd5190/1372987261444/Wall%20background_08.jpg");
+	background-size: cover;
+	font-size: 18px;
+	color: rgba(200, 200, 200, 0.9);
+	text-align: center;
+	}
+ul{
+	margin: 20px auto;
+	}
+li{
+	background: rgba(255,255,255,0.8);
+	border-radius: 20px;
+	padding: 20px;
+	display: inline;
+	cursor: pointer;
+	margin:1px;
+	color: rgba(20, 20, 20, 0.7);
+	}
+input{
+	padding: 8px;
+	margin: 0 3px 0 0;
+	border-radius: 5px;
+	}
+button{
+	padding: 8px;
+	border-radius: 5px;
+	}
+#res{
+font-size: 20px;
+}
+</style>
+
+</br></br>
+
+
+<p>Choose your numbers wisely such that 
+the other player, fells short of balls in the container to make a move.</br></p>
+
+<input placeholder="Player 1" id="data1"></input>
+<input placeholder="Player 2" id="data2"></input>
+<button onclick="results()">Freeze and Submit</button>
+
+</br></br>
+
+<div id="cons"></div>
+</br></br>
+<ul>
+	<li onclick="pswitch1()" onmouseover="hyper(this)" onmouseout="lower(this)">Switch to Single Player Mode</li>
+	<li onclick="rld()" onmouseover="hyper(this)" onmouseout="lower(this)">Play Again</li>
+	<li onclick="openhome()" onmouseover="hyper(this)" onmouseout="lower(this)">Home</li>
+</ul>
+</br></br>
+<div id="res"></div>
+
+
+<script>
+	var v1 = document.getElementById("data1").value ;
+	var v2 = document.getElementById("data2").value ;
+	var n = Math.ceil(Math.random()*40) + 30;
+	
+document.getElementById("cons").innerHTML = "</br><i>Constraint: Both the players should choose a natural number below 30.</i></br></br>The value of n(i.e the total number of balls in the collection) is "+n+".</br>";
+	
+	
+function gcd(a,b)
+{ 
+if (b == 0)
+   {return a}
+else
+   {return gcd(b, a % b)}
+}
+
+function hyper(x) {
+x.style.background = "rgba(20, 20, 20, 0.7)";
+x.style.color = "rgba(255,255,255,0.8)";
+}
+
+function lower(x){
+x.style.background = "rgba(255,255,255,0.8)" ;
+x.style.color = "rgba(20, 20, 20, 0.7)";
+}
+
+function openhome(){
+window.open("./index.html");
+}
+
+function pswitch1(){
+window.open("./p1.html");
+}
+
+function rld(){
+	document.getElementById("data1").value = "";
+	document.getElementById("data2").value = "";
+	location.reload();
+}
+	
+function results(){
+	v1 = document.getElementById("data1").value ;
+	v2 = document.getElementById("data2").value ;
+	if(v1%1==0 && v1<=30 && v1>0 && v2%1==0 && v2<=30 && v2>0){
+	findthewinner();
+	}
+	else{
+	alert("Enter a valid input. Consider the constraints while choosing your input.");
+	document.getElementById("data1").value = "";
+	document.getElementById("data2").value = "";
+	//location.reload();
+	}
+}
+
+function findthewinner(){
+while(1){
+	if(n-gcd(n,v1)>=0 && n!=0)
+	{n-=gcd(n,v1);}
+	else{ 
+	document.getElementById("res").innerHTML = "Player 2 rocked. Congratulations to him!"; 
+	break;
+	}
+	
+	if(n-gcd(n,v2) >= 0 && n!=0)
+	{n-=gcd(n,v2);}
+	else{ 
+	document.getElementById("res").innerHTML = "Player 1 rocked. Congratulations to him!"; 
+	break;
+	}
+	}
+
+}
+</script>
+</body>
+</html>
+
