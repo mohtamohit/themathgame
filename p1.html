@@ -57,7 +57,7 @@ the player two, fells short of balls in the container to make a move.</br></p>
 	<li onclick="openhome()" onmouseover="hyper(this)" onmouseout="lower(this)">Home</li>
 </ul>
 
-<div id="timer">02:00</div>
+<div id="timer"></div>
 
 <script>
 	var i = 300;
@@ -104,14 +104,13 @@ function rld(){
 	document.getElementById("datain").value = "";
 	location.reload();
 }
-
 function switchp2() {
 	 window.open("./p2.html");
 }
 //function to calc. results		
 function results(){
 	vl = document.getElementById("datain").value ;
-	if(vl%1==0 && vl<=30 && vl>0){
+	if(vl%1==0 && vl<=30 && vl>0 && check()){
 	clearInterval(t);
 	findthewinner();
 	}
@@ -121,7 +120,6 @@ function results(){
 	//location.reload();
 	}
 }
-
 function startimer(){
 	document.getElementById("timer").innerHTML = "You have just "+i+" seconds left to solve this problem." ;
 	i--;
@@ -130,25 +128,78 @@ function startimer(){
 	location.reload();
 	}
 }
-
+function check(){
+	if(x==0){
+		if(vl>=1 && vl<=20 && vl&1) return 1;
+		return 0;
+	}
+	var pm = [2,3,5,7,11,13,17,19,23,29];
+	if(x==1){
+		for(var i=0; i<pm.length;i++){
+			if(vl==pm[i]) return 1;
+		}
+		return 0;
+	}
+	if(x==2){
+		if(vl>=1 && vl<=20 && vl%2==0) return 1;
+		return 0;
+	}
+	if(x==3){
+		if(vl>=1 && vl<=30 &&(vl%3==0 || vl%5==0)) return 1;
+		return 0;
+	}
+	if(x==4){
+		if(vl<=10 && vl>=1) return 1;
+		return 0;
+	}
+	if(x==5){
+		if(vl>=1 && vl<=30 && vl%2==0) return 1;
+		return 0;
+	}
+	if(x==6){
+		if(vl>=1 && vl<=12) return 1;
+		return 0;
+	}
+	if(x==7){
+		if(vl>=1 && vl<=16){
+			for(var i=0; i<6; i++){
+				if(pm[i]==vl) return 0;
+			}
+			return 1;
+		}
+		return 0;
+	}
+	if(x==8){
+		if(vl<20){
+			for(var i=0; i<8; i++){
+				if(pm[i]==vl) return 1;
+			}
+		}
+		return 0;
+	}
+	if(x==9){
+		if(vl<=10 && vl>=1) return 1;
+		return 0;	
+	}
+}
 function findthewinner(){
-while(1){
-	if(n-gcd(n,vl)>=0 && n!=0)
-	{n-=gcd(n,vl);}
-	else{ 
-	document.getElementById("timer").innerHTML = "Sorry, but unfortunately you lose. Did you read the instructions properly? We would like you to try again."; 
-	setTimeout(rld, 5000);
-	break;
-	}
+		while(1){
+			if(n-gcd(n,vl)>=0 && n!=0)
+			{n-=gcd(n,vl);}
+			else{ 
+			document.getElementById("timer").innerHTML = "Sorry, but unfortunately you lose. Did you read the instructions properly? We would like you to try again."; 
+			setTimeout(rld, 5000);
+			break;
+			}
+			
+			if(n-gcd(n,number_of_p2) >= 0 && n!=0)
+			{n-=gcd(n,number_of_p2);}
+			else{ 
+				document.getElementById("timer").innerHTML = "Congratulations, you are truely a genius! You win."; 
+				break;
+			}
+		}
 	
-	if(n-gcd(n,number_of_p2) >= 0 && n!=0)
-	{n-=gcd(n,number_of_p2);}
-	else{ 
-	document.getElementById("timer").innerHTML = "Congratulations, you are truely a genius! You win."; 
-	break;
-	}
-	}
-
 }
 </script>
 </body>
