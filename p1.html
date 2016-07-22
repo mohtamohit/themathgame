@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<head>
+	<title>TMG-Single Player</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+</head>
+<body onload="startimer()">
+<style>
+	body{
+	background: url("http://static.squarespace.com/static/51cfa39ce4b02caa003edefe/t/51d61f7de4b0108eefdd5190/1372987261444/Wall%20background_08.jpg");
+	background-size: cover;
+	font-size: 18px;
+	color: rgba(200, 200, 200, 0.9);
+	text-align: center;
+	}
+	ul{
+	margin: 20px auto;
+	}
+	li{
+	background: rgba(255,255,255,0.8);
+	border-radius: 20px;
+	padding: 20px;
+	display: inline;
+	cursor: pointer;
+	margin:1px;
+	color: rgba(20, 20, 20, 0.7);
+	}
+	input{
+	padding: 8px;
+	margin: 0 3px 0 0;
+	border-radius: 5px;
+	}
+	button{
+	padding: 8px;
+	border-radius: 5px;
+	}
+	#timer{
+	font-size: 24px;
+	margin: 50px auto;
+	padding: 10px;
+	max-width: 700px;
+	}
+</style>
+</br></br>
+<div class="start">
+	<p>Choose your number wisely such that 
+the player two, fells short of balls in the container to make a move.</br></p>
+
+	<input placeholder="Type your number here" id="datain"></input>
+	<button onclick="results()">Freeze and Submit</button>
+	<div id="cons"></div>
+	</br>
+</div>
+
+<ul>
+	<li onclick="switchp2()" onmouseover="hyper(this)" onmouseout="lower(this)">Switch to 2 Player Mode</li>
+	<li onclick="rld()" onmouseover="hyper(this)" onmouseout="lower(this)">Play Again</li>
+	<li onclick="openhome()" onmouseover="hyper(this)" onmouseout="lower(this)">Home</li>
+</ul>
+
+<div id="timer">02:00</div>
+
+<script>
+	var i = 300;
+	var t = window.setInterval(startimer, 1000);
+	var vl = document.getElementById("datain").value ;
+	var x= Math.ceil(Math.random()*8);
+	var n = Math.ceil(Math.random()*40) + 30;
+	var number_of_p2 = Math.ceil(Math.random()*15) + 4;
+	var constraints = ["The number lies between 1-20 and is an odd number.",
+	 "The number lies between 1-30 and is a prime number.",
+	 "The number lies between 1-20 and is an even number.",
+	 "The number lies between 1-30 and is divisible by either 3 or 5.",
+	 "The number should be any natural number below 10.",
+	 "The number lies between 1-30 and is an even number.",
+	 "The number lies between 1-12.",
+	 "The number should be any composite number between 1-16.",
+	 "The number should be any prime number under 20.",
+	 "Any natural number under 10"];
+	 
+	document.getElementById("cons").innerHTML = "</br><i>Constraint: "+constraints[x]+"</i></br></br>The value of n(i.e the total number of balls in the collection) is "+n+".</br></br>And the number chosen by the player two is "+number_of_p2+".";
+	
+//function to calc. gcd	
+function gcd(a,b)
+{ 
+if (b == 0)
+   {return a}
+else
+   {return gcd(b, a % b)}
+}
+//function to change appearance of some buttons onmouseover
+function hyper(x) {
+x.style.background = "rgba(20, 20, 20, 0.7)";
+x.style.color = "rgba(255,255,255,0.8)";
+}
+//function to change back appearance of them to normal
+function lower(x){
+x.style.background = "rgba(255,255,255,0.8)" ;
+x.style.color = "rgba(20, 20, 20, 0.7)";
+}
+function openhome(){
+window.open("./index.html");
+}
+function rld(){
+	document.getElementById("datain").value = "";
+	location.reload();
+}
+
+function switchp2() {
+	 window.open("./p2.html");
+}
+
+
+//function to calc. results		
+function results(){
+	vl = document.getElementById("datain").value ;
+	if(vl%1==0 && vl<=30 && vl>0 && check()){
+	clearInterval(t);
+	findthewinner();
+	}
+	else{
+	alert("Enter a valid input. Consider the constraints while choosing your input.");
+	document.getElementById("datain").value = "";
+	//location.reload();
+	}
+}
+
+function startimer(){
+	document.getElementById("timer").innerHTML = "You have just "+i+" seconds left to solve this problem." ;
+	i--;
+	if(i<0){
+	alert("Sorry!! You lose on time. Be quick next time. Click Ok to play again.");
+	location.reload();
+	}
+}
+function check(){
+	if(x==0){
+		if(vl>=1 && vl<=20 && vl&1) return 1;
+		return 0;
+	}
+	var pm = [2,3,5,7,11,13,17,19,23,29];
+	if(x==1){
+		for(var i=0; i<pm.length;i++){
+			if(vl==pm[i]) return 1;
+		}
+		return 0;
+	}
+	if(x==2){
+		if(vl>=1 && vl<=20 && vl%2==0) return 1;
+		return 0;
+	}
+	if(x==3){
+		if(vl>=1 && vl<=30 &&(vl%3==0 || vl%5==0)) return 1;
+		return 0;
+	}
+	if(x==4){
+		if(vl<=10 && vl>=1) return 1;
+		return 0;
+	}
+	if(x==5){
+		if(vl>=1 && vl<=30 && vl%2==0) return 1;
+		return 0;
+	}
+	if(x==6){
+		if(vl>=1 && vl<=12) return 1;
+		return 0;
+	}
+	if(x==7){
+		if(vl>=1 && vl<=16){
+			for(var i=0; i<6; i++){
+				if(pm[i]==vl) return 0;
+			}
+			return 1;
+		}
+		return 0;
+	}
+	if(x==8){
+		if(vl<20){
+			for(var i=0; i<8; i++){
+				if(pm[i]==vl) return 1;
+			}
+		}
+		return 0;
+	}
+	if(x==9){
+		if(vl<=10 && vl>=1) return 1;
+		return 0;	
+	}
+}
+
+
+function findthewinner(){
+		while(1){
+			if(n-gcd(n,vl)>=0 && n!=0)
+			{n-=gcd(n,vl);}
+			else{ 
+			document.getElementById("timer").innerHTML = "Sorry, but unfortunately you lose. Did you read the instructions properly? We would like you to try again."; 
+			setTimeout(rld, 5000);
+			break;
+			}
+			
+			if(n-gcd(n,number_of_p2) >= 0 && n!=0)
+			{n-=gcd(n,number_of_p2);}
+			else{ 
+				document.getElementById("timer").innerHTML = "Congratulations, you are truely a genius! You win."; 
+				break;
+			}
+		}
+	
+
+}
+</script>
+</body>
+</html>
